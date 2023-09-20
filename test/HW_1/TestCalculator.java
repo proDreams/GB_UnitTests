@@ -17,6 +17,20 @@ public class TestCalculator {
     }
 
     @Test
+    public void testZeroDiscount() {
+        assertThat(Calculator.calculateDiscount(1000, 0)).isEqualTo(1000);
+    }
+    @Test
+    public void testZeroSumProducts() {
+        assertThat(Calculator.calculateDiscount(0, 50)).isEqualTo(0);
+    }
+
+    @Test
+    public void testFloatSumProducts() {
+        assertThat(Calculator.calculateDiscount(200.5, 50)).isEqualTo(100.25);
+    }
+
+    @Test
     public void testBigDiscount() {
         assertThatThrownBy(() -> Calculator.calculateDiscount(1000, 100))
                 .isInstanceOf(ArithmeticException.class)
@@ -26,6 +40,12 @@ public class TestCalculator {
     @Test
     public void testNegativeDiscount() {
         assertThatThrownBy(() -> Calculator.calculateDiscount(1000, -20))
+                .isInstanceOf(ArithmeticException.class)
+                .hasMessage("Скидка не может быть меньше 0%");
+    }
+    @Test
+    public void testNegativeDiscountAndSumProducts() {
+        assertThatThrownBy(() -> Calculator.calculateDiscount(-1000, -20))
                 .isInstanceOf(ArithmeticException.class)
                 .hasMessage("Скидка не может быть меньше 0%");
     }
